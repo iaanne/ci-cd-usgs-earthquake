@@ -1,17 +1,17 @@
 name: CI-CD USGS Pipeline
 
-# Push ke main, manual, dan schedule menguji kode, mengambil data USGS, lalu mengunggahnya ke Azure.
+# Push, manual, dan schedule menguji kode, mengambil data USGS, lalu mengunggahnya ke Azure.
 # Pull request hanya menguji kode dan CSV contoh.
 on:
   push:
-    branches: [main]
+    branches: [main, feat/ingestion]
     paths:
       - 'ingest.py'
       - 'tests/**'
       - 'fixtures/**'
       - '.github/workflows/usgs-cicd.yaml'
   pull_request:
-    branches: [main]
+    branches: [main, feat/ingestion]
     paths:
       - 'ingest.py'
       - 'tests/**'
@@ -47,7 +47,7 @@ jobs:
   ingest:
     name: Ingest
     needs: test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/ingestion'
     runs-on: ubuntu-latest
     steps:
       - name: Ambil kode
@@ -72,7 +72,7 @@ jobs:
   deploy:
     name: Deploy
     needs: ingest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/ingestion'
     runs-on: ubuntu-latest
     permissions:
       contents: read
