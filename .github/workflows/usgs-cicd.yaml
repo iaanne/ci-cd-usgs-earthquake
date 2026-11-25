@@ -1,7 +1,7 @@
 name: CI-CD USGS Pipeline
 
-# Push dan pull request menguji kode serta CSV contoh.
-# Manual dan schedule mengambil data USGS lalu mengunggahnya ke Azure.
+# Push, manual, dan schedule menguji kode, mengambil data USGS, lalu mengunggahnya ke Azure.
+# Pull request hanya menguji kode dan CSV contoh.
 on:
   push:
     branches: [main, feat/ingestion]
