@@ -47,9 +47,7 @@ jobs:
   ingest:
     name: Ingest
     needs: test
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/ingestion'
     runs-on: ubuntu-latest
     steps:
       - name: Ambil kode
@@ -74,9 +72,7 @@ jobs:
   deploy:
     name: Deploy
     needs: ingest
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/ingestion'
     runs-on: ubuntu-latest
     permissions:
       contents: read
