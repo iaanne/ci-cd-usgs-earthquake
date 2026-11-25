@@ -1,1 +1,1 @@
-# ci-cd-usgs-earthquake
+# usgs-earthquake-cicd
