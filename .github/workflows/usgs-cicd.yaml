@@ -1,7 +1,7 @@
 name: CI-CD USGS Pipeline
 
-# Push ke main, manual, dan schedule menguji kode, mengambil data USGS, lalu mengunggahnya ke Azure.
-# Pull request hanya menguji kode dan CSV contoh.
+# Push dan pull request menguji kode serta CSV contoh.
+# Manual dan schedule mengambil data USGS lalu mengunggahnya ke Azure.
 on:
   push:
     branches: [main]
@@ -47,7 +47,9 @@ jobs:
   ingest:
     name: Ingest
     needs: test
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
       - name: Ambil kode
@@ -72,7 +74,9 @@ jobs:
   deploy:
     name: Deploy
     needs: ingest
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     permissions:
       contents: read
